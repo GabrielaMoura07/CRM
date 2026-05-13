@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funil | FlowCRM</title>
+
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">
+        <div class="logo-box">F</div>
+
+        <div class="logo-text">
+            <h1>FlowCRM</h1>
+            <span>Sales Platform</span>
+        </div>
+    </div>
+
+    <div class="menu">
+        <a href="index.html">Dashboard</a>
+        <a href="leads.html">Leads</a>
+        <a href="funil.html">Funil</a>
+        <a href="novo_lead.html">Novo Lead</a>
+    </div>
+</div>
+
+<main class="main">
+
+    <div class="page-header">
+        <div>
+            <h1>Funil Comercial</h1>
+            <p>Arraste os cards entre etapas e clique para abrir detalhes.</p>
+        </div>
+
+        <a href="novo_lead.html" class="btn">Novo Lead</a>
+    </div>
+
+    <section class="kanban-wrapper">
+        <div class="kanban-board" id="kanbanBoard"></div>
+    </section>
+
+</main>
+
+<script src="../assets/database.js"></script>
+<script src="../assets/app.js"></script>
+
+<script>
+const stages = [
+    { id: 'novo', title: 'Pesquisa' },
+    { id: 'atendimento', title: 'Contato' },
+    { id: 'proposta', title: 'Prospecção' },
+    { id: 'fechado', title: 'Convertido' },
+    { id: 'perdido', title: 'Perdido' }
+];
+
+function renderKanban() {
+    const leads = getLeads();
+    const board = document.getElementById('kanbanBoard');
+
+    board.innerHTML = stages.map(stage => {
+        const stageLeads = leads.filter(lead => lead.status === stage.id);
+
+        return `
+            <div class="kanban-column" data-status="${stage.id}">
+                <div class="kanban-column-header">
+                    <h2>${stage.title}</h2>
+                    <span>${stageLeads.length} negociações</span>
+                </div>
+
+                <div class="kanban-cards" data-status="${stage.id}">
+                    ${
+                        stageLeads.length > 0
+                        ? stageLeads.map(lead => `
+                            <div class="kanban-card" draggable="true" data-id="${lead.id}">
+                                <div class="kanban-card-accent"></div>
+
+                                <div class="kanban-card-content">
+                                    <div class="kanban-avatar">
+                                        ${lead.nome.charAt(0).toUpperCase()}
+                                    </div>
+
+                                    <div class="kanban-info">
+                                        <h3>${lead.nome}</h3>
+                                        <p>${lead.empresa || 'Sem empresa'}</p>
+
+                                        <div class="kanban-meta">
+                                            <span>${getPriorityLabel(lead.prioridade)}</span>
+                                            <strong>${formatMoney(lead.valor)}</strong>
+                                        </div>
+
+                                        <a class="kanban-link" href="detalhes.html?id=${lead.id}">
+                                            Abrir lead
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')
+                        : `<div class="kanban-empty">Nenhuma negociação</div>`
+                    }
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    enableDragAndDrop();
+}
+
+function enableDragAndDrop() {
+    const cards = document.querySelectorAll('.kanban-card');
+    const columns = document.querySelectorAll('.kanban-cards');
+
+    cards.forEach(card => {
+        card.addEventListener('dragstart', () => {
+            card.classList.add('dragging');
+            event.dataTransfer.setData('leadId', card.dataset.id);
+        });
+
+        card.addEventListener('dragend', () => {
+            card.classList.remove('dragging');
+        });
+    });
+
+    columns.forEach(column => {
+        column.addEventListener('dragover', event => {
+            event.preventDefault();
+            column.classList.add('drag-over');
+        });
+
+        column.addEventListener('dragleave', () => {
+            column.classList.remove('drag-over');
+        });
+
+        column.addEventListener('drop', event => {
+            event.preventDefault();
+
+            const leadId = event.dataTransfer.getData('leadId');
+            const newStatus = column.dataset.status;
+
+            updateLeadStatus(leadId, newStatus);
+
+            column.classList.remove('drag-over');
+
+            renderKanban();
+        });
+    });
+}
+
+renderKanban();
+</script>
+
+</body>
+</html>

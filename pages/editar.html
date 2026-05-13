@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Lead | FlowCRM</title>
+
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-box">
+            F
+        </div>
+
+        <div class="logo-text">
+            <h1>FlowCRM</h1>
+            <span>Sales Platform</span>
+        </div>
+
+    </div>
+
+    <div class="menu">
+
+        <a href="index.html">
+            Dashboard
+        </a>
+
+        <a href="leads.html">
+            Leads
+        </a>
+
+        <a href="funil.html">
+            Funil
+        </a>
+
+        <a href="novo_lead.html">
+            Novo Lead
+        </a>
+
+    </div>
+
+</div>
+
+<main class="main">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Editar Lead</h1>
+
+            <p>
+                Atualize os dados da oportunidade comercial.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="form-container">
+
+        <form
+            id="editLeadForm"
+            class="form-card"
+        >
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Nome
+                    </label>
+
+                    <input
+                        type="text"
+                        name="nome"
+                        id="nome"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Empresa
+                    </label>
+
+                    <input
+                        type="text"
+                        name="empresa"
+                        id="empresa"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Telefone
+                    </label>
+
+                    <input
+                        type="text"
+                        name="telefone"
+                        id="telefone"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        E-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Origem
+                    </label>
+
+                    <select
+                        name="origem"
+                        id="origem"
+                    >
+
+                        <option>
+                            Instagram
+                        </option>
+
+                        <option>
+                            Google Ads
+                        </option>
+
+                        <option>
+                            Site
+                        </option>
+
+                        <option>
+                            WhatsApp
+                        </option>
+
+                        <option>
+                            LinkedIn
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Prioridade
+                    </label>
+
+                    <select
+                        name="prioridade"
+                        id="prioridade"
+                    >
+
+                        <option value="quente">
+                            Quente
+                        </option>
+
+                        <option value="morno">
+                            Morno
+                        </option>
+
+                        <option value="frio">
+                            Frio
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select
+                        name="status"
+                        id="status"
+                    >
+
+                        <option value="novo">
+                            Novo
+                        </option>
+
+                        <option value="atendimento">
+                            Atendimento
+                        </option>
+
+                        <option value="proposta">
+                            Proposta
+                        </option>
+
+                        <option value="fechado">
+                            Fechado
+                        </option>
+
+                        <option value="perdido">
+                            Perdido
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Valor
+                    </label>
+
+                    <input
+                        type="number"
+                        name="valor"
+                        id="valor"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Próxima ação
+                </label>
+
+                <input
+                    type="text"
+                    name="proximaAcao"
+                    id="proximaAcao"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Observações
+                </label>
+
+                <textarea
+                    name="observacoes"
+                    id="observacoes"
+                    rows="5"
+                ></textarea>
+
+            </div>
+
+            <div
+                style="
+                    display:flex;
+                    gap:14px;
+                    margin-top:20px;
+                "
+            >
+
+                <button class="btn">
+                    Salvar alterações
+                </button>
+
+                <a
+                    id="backButton"
+                    href="#"
+                    class="btn"
+                    style="
+                        background:#334155;
+                    "
+                >
+                    Voltar
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+<script src="../assets/database.js"></script>
+<script src="../assets/app.js"></script>
+
+<script>
+
+const params = new URLSearchParams(
+    window.location.search
+);
+
+const leadId = params.get('id');
+
+const lead = getLeadById(leadId);
+
+if (!lead) {
+
+    alert('Lead não encontrado');
+
+    window.location.href = 'leads.html';
+
+}
+
+document.getElementById('backButton').href =
+    `detalhes.html?id=${lead.id}`;
+
+document.getElementById('nome').value =
+    lead.nome || '';
+
+document.getElementById('empresa').value =
+    lead.empresa || '';
+
+document.getElementById('telefone').value =
+    lead.telefone || '';
+
+document.getElementById('email').value =
+    lead.email || '';
+
+document.getElementById('origem').value =
+    lead.origem || '';
+
+document.getElementById('prioridade').value =
+    lead.prioridade || '';
+
+document.getElementById('status').value =
+    lead.status || '';
+
+document.getElementById('valor').value =
+    lead.valor || '';
+
+document.getElementById('proximaAcao').value =
+    lead.proximaAcao || '';
+
+document.getElementById('observacoes').value =
+    lead.observacoes || '';
+
+const form = document.getElementById(
+    'editLeadForm'
+);
+
+form.addEventListener('submit', (e) => {
+
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    const data = Object.fromEntries(
+        formData.entries()
+    );
+
+    updateLead(leadId, data);
+
+    window.location.href =
+        `detalhes.html?id=${leadId}`;
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leads | FlowCRM</title>
+
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <div class="logo-box">
+            F
+        </div>
+
+        <div class="logo-text">
+            <h1>FlowCRM</h1>
+            <span>Sales Platform</span>
+        </div>
+    </div>
+
+    <div class="menu">
+        <a href="index.html">Dashboard</a>
+        <a href="leads.html">Leads</a>
+        <a href="funil.html">Funil</a>
+        <a href="novo_lead.html">Novo Lead</a>
+    </div>
+
+</div>
+
+<main class="main">
+
+    <div class="page-header">
+        <div>
+            <h1>Leads</h1>
+            <p>Gerencie todas as oportunidades comerciais.</p>
+        </div>
+
+        <a href="novo_lead.html" class="btn">
+            Novo Lead
+        </a>
+    </div>
+
+    <div class="table-container">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+                    <th>Nome</th>
+                    <th>Empresa</th>
+                    <th>Status</th>
+                    <th>Prioridade</th>
+                    <th>Valor</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="leadsTable"></tbody>
+
+        </table>
+
+    </div>
+
+</main>
+
+<script src="../assets/database.js"></script>
+<script src="../assets/app.js"></script>
+
+<script>
+
+const leads = getLeads();
+
+const table = document.getElementById('leadsTable');
+
+table.innerHTML = leads.map(lead => `
+
+    <tr>
+
+        <td>${lead.nome}</td>
+
+        <td>${lead.empresa || '-'}</td>
+
+        <td>${getStatusLabel(lead.status)}</td>
+
+        <td>${getPriorityLabel(lead.prioridade)}</td>
+
+        <td>${formatMoney(lead.valor)}</td>
+
+    </tr>
+
+`).join('');
+
+</script>
+
+</body>
+</html>

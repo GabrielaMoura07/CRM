@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Lead | FlowCRM</title>
+
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-box">
+            F
+        </div>
+
+        <div class="logo-text">
+            <h1>FlowCRM</h1>
+            <span>Sales Platform</span>
+        </div>
+
+    </div>
+
+    <div class="menu">
+
+        <a href="index.html">
+            Dashboard
+        </a>
+
+        <a href="leads.html">
+            Leads
+        </a>
+
+        <a href="funil.html">
+            Funil
+        </a>
+
+        <a href="novo_lead.html">
+            Novo Lead
+        </a>
+
+    </div>
+
+</div>
+
+<main class="main">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Novo Lead</h1>
+
+            <p>
+                Cadastre uma nova oportunidade comercial.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="form-container">
+
+        <form
+            id="leadForm"
+            class="form-card"
+        >
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Nome
+                    </label>
+
+                    <input
+                        type="text"
+                        name="nome"
+                        required
+                        placeholder="Nome do lead"
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Empresa
+                    </label>
+
+                    <input
+                        type="text"
+                        name="empresa"
+                        placeholder="Empresa"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Telefone
+                    </label>
+
+                    <input
+                        type="text"
+                        name="telefone"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        E-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Origem
+                    </label>
+
+                    <select name="origem">
+
+                        <option>
+                            Instagram
+                        </option>
+
+                        <option>
+                            Google Ads
+                        </option>
+
+                        <option>
+                            Site
+                        </option>
+
+                        <option>
+                            WhatsApp
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Prioridade
+                    </label>
+
+                    <select name="prioridade">
+
+                        <option value="quente">
+                            Quente
+                        </option>
+
+                        <option value="morno">
+                            Morno
+                        </option>
+
+                        <option value="frio">
+                            Frio
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Valor
+                </label>
+
+                <input
+                    type="number"
+                    name="valor"
+                    placeholder="5000"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Observações
+                </label>
+
+                <textarea
+                    name="observacoes"
+                    rows="5"
+                ></textarea>
+
+            </div>
+
+            <button class="btn">
+                Salvar Lead
+            </button>
+
+        </form>
+
+    </div>
+
+</main>
+
+<script src="../assets/database.js"></script>
+
+<script>
+
+const form = document.getElementById('leadForm');
+
+form.addEventListener('submit', (e) => {
+
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    const data = Object.fromEntries(
+        formData.entries()
+    );
+
+    createLead(data);
+
+    window.location.href = 'leads.html';
+
+});
+
+</script>
+
+</body>
+</html>

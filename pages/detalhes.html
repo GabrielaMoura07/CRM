@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes | FlowCRM</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">
+        <div class="logo-box">F</div>
+        <div class="logo-text">
+            <h1>FlowCRM</h1>
+            <span>Sales Platform</span>
+        </div>
+    </div>
+
+    <div class="menu">
+        <a href="index.html">Dashboard</a>
+        <a href="leads.html">Leads</a>
+        <a href="funil.html">Funil</a>
+        <a href="novo_lead.html">Novo Lead</a>
+    </div>
+</div>
+
+<main class="main">
+
+    <section class="deal-topbar">
+        <div>
+            <a href="funil.html" class="back-link">Voltar para o funil</a>
+            <h1 id="leadName">Lead</h1>
+            <p>Dados completos, histórico e próximos passos da oportunidade.</p>
+        </div>
+
+        <div class="deal-actions">
+            <a id="editLink" href="#" class="btn btn-primary">Editar lead</a>
+            <button id="deleteBtn" class="btn btn-outline-danger">Excluir</button>
+        </div>
+    </section>
+
+    <section class="pipeline-strip" id="pipelineStrip"></section>
+
+    <section class="deal-page-grid">
+
+        <aside class="deal-left">
+
+            <div class="side-panel">
+                <div class="panel-header">
+                    <h2>Negociação</h2>
+                </div>
+
+                <div id="leadInfo" class="deal-info-list"></div>
+            </div>
+
+            <div class="side-panel">
+                <div class="panel-header">
+                    <h2>Contato</h2>
+                </div>
+
+                <div class="contact-box">
+                    <strong id="contactName">-</strong>
+                    <span id="contactPhone">-</span>
+                    <span id="contactEmail">-</span>
+                </div>
+            </div>
+
+        </aside>
+
+        <section class="deal-center">
+
+            <div class="task-card">
+                <div>
+                    <span class="section-label">Próxima tarefa</span>
+                    <h2 id="nextAction">Nenhuma próxima ação cadastrada</h2>
+                </div>
+
+                <button class="btn btn-soft" data-tab-target="tarefas">
+                    Adicionar tarefa
+                </button>
+            </div>
+
+            <div class="tabs-clean">
+                <button class="tab-clean active" data-tab="historico">Histórico</button>
+                <button class="tab-clean" data-tab="email">E-mail</button>
+                <button class="tab-clean" data-tab="tarefas">Tarefas</button>
+                <button class="tab-clean" data-tab="propostas">Propostas</button>
+            </div>
+
+            <div class="tab-pane active" id="tab-historico">
+                <div class="history-toolbar">
+                    <div>
+                        <span class="section-label">Linha do tempo</span>
+                        <h2>Histórico</h2>
+                    </div>
+
+                    <button id="showInteractionForm" class="btn btn-primary">
+                        Criar anotação
+                    </button>
+                </div>
+
+                <form id="interactionForm" class="annotation-card hidden">
+                    <label>Nova anotação</label>
+
+                    <textarea
+                        id="interactionText"
+                        rows="4"
+                        placeholder="Ex: Cliente pediu retorno amanhã às 10h"
+                        required
+                    ></textarea>
+
+                    <div class="annotation-actions">
+                        <button type="button" id="cancelAnnotation" class="btn btn-ghost">
+                            Cancelar
+                        </button>
+
+                        <button type="submit" class="btn btn-primary">
+                            Salvar anotação
+                        </button>
+                    </div>
+                </form>
+
+                <div id="historyList" class="timeline-pro"></div>
+            </div>
+
+            <div class="tab-pane" id="tab-email">
+                <div class="history-toolbar">
+                    <div>
+                        <span class="section-label">Comunicação</span>
+                        <h2>E-mails</h2>
+                    </div>
+                </div>
+
+                <form id="emailForm" class="annotation-card">
+                    <label>Registrar e-mail</label>
+
+                    <textarea
+                        id="emailText"
+                        rows="4"
+                        placeholder="Ex: Enviado e-mail com proposta comercial."
+                        required
+                    ></textarea>
+
+                    <div class="annotation-actions">
+                        <button type="submit" class="btn btn-primary">
+                            Salvar e-mail
+                        </button>
+                    </div>
+                </form>
+
+                <div id="emailList" class="simple-list"></div>
+            </div>
+
+            <div class="tab-pane" id="tab-tarefas">
+                <div class="history-toolbar">
+                    <div>
+                        <span class="section-label">Atividades</span>
+                        <h2>Tarefas</h2>
+                    </div>
+                </div>
+
+                <form id="taskForm" class="annotation-card">
+                    <label>Nova tarefa</label>
+
+                    <input
+                        id="taskText"
+                        type="text"
+                        placeholder="Ex: Verificar pagamento amanhã"
+                        required
+                    >
+
+                    <div class="annotation-actions">
+                        <button type="submit" class="btn btn-primary">
+                            Criar tarefa
+                        </button>
+                    </div>
+                </form>
+
+                <div id="taskList" class="simple-list"></div>
+            </div>
+
+            <div class="tab-pane" id="tab-propostas">
+                <div class="history-toolbar">
+                    <div>
+                        <span class="section-label">Comercial</span>
+                        <h2>Propostas</h2>
+                    </div>
+                </div>
+
+                <form id="proposalForm" class="annotation-card">
+                    <label>Nova proposta</label>
+
+                    <input
+                        id="proposalTitle"
+                        type="text"
+                        placeholder="Título da proposta"
+                        required
+                    >
+
+                    <input
+                        id="proposalValue"
+                        type="number"
+                        placeholder="Valor da proposta"
+                        style="margin-top:12px;"
+                        required
+                    >
+
+                    <div class="annotation-actions">
+                        <button type="submit" class="btn btn-primary">
+                            Criar proposta
+                        </button>
+                    </div>
+                </form>
+
+                <div id="proposalList" class="simple-list"></div>
+            </div>
+
+        </section>
+
+    </section>
+
+</main>
+
+<script src="../assets/database.js"></script>
+<script src="../assets/app.js"></script>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const leadId = params.get('id');
+
+let lead = getLeadById(leadId);
+
+if (!lead) {
+    alert('Lead não encontrado.');
+    window.location.href = 'leads.html';
+}
+
+const stages = [
+    { id: 'novo', label: 'Pesquisa' },
+    { id: 'atendimento', label: 'Contato' },
+    { id: 'proposta', label: 'Prospecção' },
+    { id: 'fechado', label: 'Convertido' },
+    { id: 'perdido', label: 'Perdido' }
+];
+
+document.getElementById('editLink').href = `editar.html?id=${lead.id}`;
+
+function refreshLead() {
+    lead = getLeadById(leadId);
+}
+
+function renderPipeline() {
+    refreshLead();
+
+    const pipeline = document.getElementById('pipelineStrip');
+
+    pipeline.innerHTML = stages.map(stage => `
+        <button
+            class="pipeline-step ${lead.status === stage.id ? 'active' : ''}"
+            data-status="${stage.id}"
+        >
+            ${stage.label}
+        </button>
+    `).join('');
+
+    document.querySelectorAll('.pipeline-step').forEach(button => {
+        button.addEventListener('click', () => {
+            const newStatus = button.dataset.status;
+            updateLeadStatus(leadId, newStatus);
+            renderDetails();
+        });
+    });
+}
+
+function renderDetails() {
+    refreshLead();
+
+    document.getElementById('leadName').innerText = lead.nome;
+    document.getElementById('contactName').innerText = lead.nome;
+    document.getElementById('contactPhone').innerText = lead.telefone || '-';
+    document.getElementById('contactEmail').innerText = lead.email || '-';
+
+    document.getElementById('nextAction').innerText =
+        lead.proximaAcao || 'Nenhuma próxima ação cadastrada';
+
+    document.getElementById('leadInfo').innerHTML = `
+        <div>
+            <span>Nome</span>
+            <strong>${lead.nome}</strong>
+        </div>
+
+        <div>
+            <span>Empresa</span>
+            <strong>${lead.empresa || 'Sem empresa'}</strong>
+        </div>
+
+        <div>
+            <span>Qualificação</span>
+            <strong>${getPriorityLabel(lead.prioridade)}</strong>
+        </div>
+
+        <div>
+            <span>Status</span>
+            <strong>${getStatusLabel(lead.status)}</strong>
+        </div>
+
+        <div>
+            <span>Valor total</span>
+            <strong>${formatMoney(lead.valor)}</strong>
+        </div>
+
+        <div>
+            <span>Fonte</span>
+            <strong>${lead.origem}</strong>
+        </div>
+
+        <div>
+            <span>Criado em</span>
+            <strong>${formatDate(lead.criadoEm)}</strong>
+        </div>
+
+        <div>
+            <span>Descrição</span>
+            <strong>${lead.observacoes || '-'}</strong>
+        </div>
+    `;
+
+    renderPipeline();
+    renderHistory();
+    renderEmails();
+    renderTasks();
+    renderProposals();
+}
+
+function renderHistory() {
+    const history = lead.historico || [];
+
+    document.getElementById('historyList').innerHTML = history.slice().reverse().map(item => `
+        <div class="timeline-pro-item">
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-card">
+                <strong>${item.descricao}</strong>
+                <span>${formatDate(item.data)}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderEmails() {
+    const emails = lead.emails || [];
+
+    document.getElementById('emailList').innerHTML = emails.length
+        ? emails.slice().reverse().map(email => `
+            <div class="list-card">
+                <strong>${email.descricao}</strong>
+                <span>${formatDate(email.data)}</span>
+            </div>
+        `).join('')
+        : `<div class="empty-box">Nenhum e-mail registrado.</div>`;
+}
+
+function renderTasks() {
+    const tasks = lead.tarefas || [];
+
+    document.getElementById('taskList').innerHTML = tasks.length
+        ? tasks.slice().reverse().map(task => `
+            <div class="list-card">
+                <strong>${task.descricao}</strong>
+                <span>${formatDate(task.data)}</span>
+            </div>
+        `).join('')
+        : `<div class="empty-box">Nenhuma tarefa criada.</div>`;
+}
+
+function renderProposals() {
+    const proposals = lead.propostas || [];
+
+    document.getElementById('proposalList').innerHTML = proposals.length
+        ? proposals.slice().reverse().map(proposal => `
+            <div class="list-card">
+                <strong>${proposal.titulo}</strong>
+                <span>${formatMoney(proposal.valor)} • ${formatDate(proposal.data)}</span>
+            </div>
+        `).join('')
+        : `<div class="empty-box">Nenhuma proposta criada.</div>`;
+}
+
+document.querySelectorAll('.tab-clean').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+
+        document.querySelectorAll('.tab-clean').forEach(item => {
+            item.classList.remove('active');
+        });
+
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+
+        tab.classList.add('active');
+        document.getElementById(`tab-${target}`).classList.add('active');
+    });
+});
+
+document.querySelectorAll('[data-tab-target]').forEach(button => {
+    button.addEventListener('click', () => {
+        const target = button.dataset.tabTarget;
+        document.querySelector(`[data-tab="${target}"]`).click();
+    });
+});
+
+document.getElementById('showInteractionForm').addEventListener('click', () => {
+    document.getElementById('interactionForm').classList.remove('hidden');
+});
+
+document.getElementById('cancelAnnotation').addEventListener('click', () => {
+    document.getElementById('interactionForm').classList.add('hidden');
+    document.getElementById('interactionText').value = '';
+});
+
+document.getElementById('interactionForm').addEventListener('submit', event => {
+    event.preventDefault();
+
+    const text = document.getElementById('interactionText').value;
+
+    addInteraction(leadId, text);
+
+    document.getElementById('interactionText').value = '';
+    document.getElementById('interactionForm').classList.add('hidden');
+
+    renderDetails();
+});
+
+document.getElementById('emailForm').addEventListener('submit', event => {
+    event.preventDefault();
+
+    addLeadItem(leadId, 'emails', {
+        descricao: document.getElementById('emailText').value,
+        data: new Date().toISOString()
+    });
+
+    document.getElementById('emailText').value = '';
+
+    renderDetails();
+});
+
+document.getElementById('taskForm').addEventListener('submit', event => {
+    event.preventDefault();
+
+    const text = document.getElementById('taskText').value;
+
+    addLeadItem(leadId, 'tarefas', {
+        descricao: text,
+        data: new Date().toISOString()
+    });
+
+    updateLead(leadId, {
+        ...getLeadById(leadId),
+        proximaAcao: text
+    });
+
+    document.getElementById('taskText').value = '';
+
+    renderDetails();
+});
+
+document.getElementById('proposalForm').addEventListener('submit', event => {
+    event.preventDefault();
+
+    addLeadItem(leadId, 'propostas', {
+        titulo: document.getElementById('proposalTitle').value,
+        valor: Number(document.getElementById('proposalValue').value),
+        data: new Date().toISOString()
+    });
+
+    document.getElementById('proposalTitle').value = '';
+    document.getElementById('proposalValue').value = '';
+
+    renderDetails();
+});
+
+document.getElementById('deleteBtn').addEventListener('click', () => {
+    const confirmDelete = confirm('Tem certeza que deseja excluir este lead?');
+
+    if (confirmDelete) {
+        deleteLead(leadId);
+        window.location.href = 'leads.html';
+    }
+});
+
+renderDetails();
+</script>
+
+</body>
+</html>
